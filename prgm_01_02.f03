@@ -1,20 +1,21 @@
-      Program prgm_01_01
+      Program prgm_01_02
 !
-!     This program reads a 3x3 matrix from a user-provided input file. After the
+!     This program reads two 3x3 matrices from two seperate user-provided input files. After each
 !     file is opened and read, it is closed and then printed.
+!
+
 !
 !
       implicit none
-      integer,parameter::inFileUnitA=10
+      integer,parameter::inFileUnitA=10,inFileUnitB=11
       integer::errorFlag,i
-      real,dimension(3,3)::matrixInA
-      character(len=128)::fileNameA
+      real,dimension(3,3)::matrixInA,matrixInB
+      character(len=128)::fileNameA,fileNameB  
 !
-!
-!     Start by asking the user for the name of the data file.
-!
-      write(*,*)' What is the name of the input data file?'
+      write(*,*)' What is the name of the 1st input data file?'
       read(*,*) fileNameA
+      write(*,*)' What is the name of the 2nd input data file?'
+      read(*,*) fileNameB
 !
 !     Open the data file and read matrixInA from that file.
 !
@@ -22,6 +23,7 @@
         iostat=errorFlag)
       if(errorFlag.ne.0) then
         write(*,*)' There was a problem opening the input file.'
+        errorFlag = 0
         goto 999
       endIf
       do i = 1,3
@@ -29,14 +31,32 @@
       endDo
       close(inFileUnitA)
 
-      write(*,*) matrixInA(1,1)
 !
 !     Call the subroutine PrintMatrix to print matrixInA.
 !
       call PrintMatrix3x3(matrixInA)
 !
   999 continue
-      End Program prgm_01_01
+      !
+!
+!     Open the data file and read matrixInB from that file.
+!
+      open(unit=inFileUnitB,file=TRIM(fileNameB),status='old',  &
+        iostat=errorFlag)
+      if(errorFlag.ne.0) then
+        write(*,*)' There was a problem opening the input file.'
+        goto 999
+      endIf
+      do i = 1,3
+        read(inFileUnitB,*) matrixInB(1,i),matrixInB(2,i),matrixInB(3,i)
+      endDo
+      close(inFileUnitB)
+
+!
+!     Call the subroutine PrintMatrix to print matrixInB
+!
+      call PrintMatrix3x3(matrixInB)
+      End Program prgm_01_02
 
 
       Subroutine PrintMatrix3x3(matrix)
