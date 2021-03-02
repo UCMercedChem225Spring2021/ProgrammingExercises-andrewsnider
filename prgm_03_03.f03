@@ -19,19 +19,17 @@
         Allocate(Array_Input((NDim*(NDim+1))/2),Matrix(NDim,NDim))
         Allocate(EVals(NDim),EVecs(NDim,NDim),Temp_Vector(3*NDim))
         Allocate(Temp_Matrix(NDim,NDim))
-
-        read(IIn,*) Array_Input
-        write(IIn,*) Array_Input
-
+        
+        Do i =1,((NDim*(NDim+1))/2)
+                read(IIn,*) Array_Input(i)
+        endDo
         Close(Unit=IIn)
 !       
         write(*,*) ' The matrix loaded (column-wise) lower-tri packed:' 
         call SymmetricPacked2Matrix_LowerPac(Ndim,Array_Input,Matrix)
-        
-        
         call Print_Matrix_Full_Real(Matrix,NDim,NDim)
-        Call SSPEV(Array_Input,NDim,EVals,EVecs,NDim,  &
-                Temp_Vector, NDim, NDim, IError)
+        Call SSPEV('V','L',NDim,Array_Input,EVals,EVecs,NDim,  &
+                Temp_Vector, IError)
         If(IError.ne.0) then
                 Write(*,*)' Failure in DSPEV.'
                 STOP
