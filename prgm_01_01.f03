@@ -28,8 +28,6 @@
         read(inFileUnitA,*) matrixInA(1,i),matrixInA(2,i),matrixInA(3,i)
       endDo
       close(inFileUnitA)
-
-      write(*,*) matrixInA(1,1)
 !
 !     Call the subroutine PrintMatrix to print matrixInA.
 !
@@ -55,9 +53,8 @@
 !
       write(*,*)' Printing Matrix'
 !
-      do i =1,3
-        write(*,1000) matrix(i,1),matrix(i,2),matrix(i,3)
-        
-      endDo
+      ADD CODE HERE
+!
+!
       return
       End Subroutine PrintMatrix3x3
